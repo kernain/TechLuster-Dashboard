@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { useTheme, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CssBaseline, IconButton, Box, Typography } from '@mui/material';
+// src/components/SidebarMenu/SidebarMenu.jsx
+import React, { useState, useContext } from 'react';
+import { useTheme, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CssBaseline, IconButton, Box, Switch, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import GridViewIcon from '@mui/icons-material/GridView';
 import PersonIcon from '@mui/icons-material/Person';
 import WorkIcon from '@mui/icons-material/Work';
@@ -11,13 +13,15 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SecurityIcon from '@mui/icons-material/Security';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import logoImage from "../assets/client-icon.png";
+import logoImage from "../../assets/client-icon.png";
+import { ThemeContext } from '../../theme/ThemeContext';
 import "./SidebarMenu.css";
 
 const drawerWidth = 240;
 
 const SidebarMenu = () => {
     const theme = useTheme();
+    const { toggleTheme, currentTheme } = useContext(ThemeContext);
     const [open, setOpen] = useState(false);
 
     const handleMouseEnter = () => {
@@ -29,17 +33,17 @@ const SidebarMenu = () => {
     };
 
     const menuItems = [
-        { text: 'Dashboard', icon: <GridViewIcon /> },
-        { text: 'User', icon: <PersonIcon /> },
-        { text: 'Jobs', icon: <WorkIcon /> },
-        { text: 'My Skills', icon: <EditIcon /> },
-        { text: 'My Offers', icon: <NoteAddIcon /> },
-        { text: 'My Invites', icon: <CalendarTodayIcon /> },
-        { text: 'My Interviews', icon: <LaptopMacIcon /> },
-        { text: 'Billing and Finance', icon: <AttachMoneyIcon /> },
-        { text: 'Customer Support', icon: <HelpOutlineIcon /> },
-        { text: 'Account and Security', icon: <SecurityIcon /> },
-        { text: 'Logout', icon: <PowerSettingsNewIcon /> },
+        { text: 'Dashboard', icon: <GridViewIcon />, link: '/' },
+        { text: 'User', icon: <PersonIcon />, link: '/user' },
+        { text: 'Jobs', icon: <WorkIcon />, link: '/my-jobs' },
+        { text: 'My Skills', icon: <EditIcon />, link: '/my-skills' },
+        { text: 'My Offers', icon: <NoteAddIcon />, link: '/my-offers' },
+        { text: 'My Invites', icon: <CalendarTodayIcon />, link: '/my-invites' },
+        { text: 'My Interviews', icon: <LaptopMacIcon />, link: '/my-interviews' },
+        { text: 'Billing and Finance', icon: <AttachMoneyIcon />, link: '/candidate-billing' },
+        { text: 'Customer Support', icon: <HelpOutlineIcon />, link: '/customer-support' },
+        { text: 'Account and Security', icon: <SecurityIcon />, link: '/my-account' },
+        { text: 'Logout', icon: <PowerSettingsNewIcon />, link: '/logout' },
     ];
 
     return (
@@ -52,7 +56,7 @@ const SidebarMenu = () => {
                 onMouseLeave={handleMouseLeave}
                 PaperProps={{
                     sx: {
-                        width: open ? drawerWidth : `calc(${theme.spacing(7)} + 25px)`,
+                        width: open ? drawerWidth : `calc(${theme.spacing(7)} + 15px)`,
                         transition: theme.transitions.create('width', {
                             easing: theme.transitions.easing.sharp,
                             duration: theme.transitions.duration.enteringScreen,
@@ -75,24 +79,18 @@ const SidebarMenu = () => {
                         {open ? <div>TechLuster</div> : <img src={logoImage} alt="Client Logo" style={{ height: '40px', width: 'auto' }} />}
                     </IconButton>
                 </Box>
-                <List sx={{
-                    overflowY: "hidden",
-                }}>
+                <List sx={{ overflowY: "hidden" }}>
                     {menuItems.map((item, index) => (
-                        <ListItem
-                            key={index}
-                            disablePadding
-                            sx={{
-                                display: 'block', paddingTop: .5, paddingBottom: .5,
-                            }}
-                        >
+                        <ListItem key={index} disablePadding sx={{ display: 'block', paddingTop: .5, paddingBottom: .5 }}>
                             <ListItemButton
+                                component={Link}
+                                to={item.link}
                                 sx={{
                                     minHeight: 48,
                                     justifyContent: open ? 'initial' : 'center',
-                                    px: 2.5,
+                                    px: 2,
                                     '&:hover': {
-                                        backgroundColor: '#FFA500',
+                                        backgroundColor: '#fc7a1e',
                                         color: '#fff',
                                     },
                                 }}
@@ -101,7 +99,7 @@ const SidebarMenu = () => {
                                     className='navigation-item-icon'
                                     sx={{
                                         minWidth: 0,
-                                        mr: open ? 3 : 'auto',
+                                        mr: open ? 0 : 'auto',
                                         justifyContent: 'center',
                                         color: 'inherit',
                                         width: 50,
@@ -113,6 +111,27 @@ const SidebarMenu = () => {
                             </ListItemButton>
                         </ListItem>
                     ))}
+                    <ListItem disablePadding sx={{ justifyContent: 'center', paddingTop: 2, }}>
+                        <Switch
+                            checked={currentTheme.palette.mode === 'dark'}
+                            onChange={toggleTheme}
+                            color="primary"
+                            sx={{
+                                '& .MuiSwitch-switchBase.Mui-checked': {
+                                    color: '#fff',
+                                },
+                                '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                                    backgroundColor: '#fc7a1e',
+                                },
+                                '& .MuiSwitch-track': {
+                                    backgroundColor: '#ccc',
+                                },
+                            }}
+                        />
+                        <Typography variant="body2" sx={{ ml: 1, display: open ? "block" : "none", }}>
+                            {currentTheme.palette.mode === 'light' ? 'Light Mode' : 'Dark Mode'}
+                        </Typography>
+                    </ListItem>
                 </List>
             </Drawer>
         </Box>

@@ -1,26 +1,57 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+// src/App.jsx
+import React, { useContext } from 'react';
 import { Box } from '@mui/material';
-import SidebarMenu from './components/SidebarMenu';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ThemeContextProvider, ThemeContext } from './theme/ThemeContext';
 import Dashboard from './screens/Dashboard/Dashboard';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import theme from './theme/theme';
+import Profile from './screens/Profile/Profile';
+import Billing from './screens/Billing/Billing';
+import Contact from './screens/Contact/Contact';
+import SidebarMenu from './components/SidebarMenu/SidebarMenu';
 import './App.css';
+import MyJobs from './screens/MyJobs/MyJobs';
+import MySkills from './screens/MySkills/MySkills';
+
+const AppContent = () => {
+  const { currentTheme } = useContext(ThemeContext);
+
+  return (
+    <Box sx={{ display: 'flex', height: '100vh' }}>
+      <Box sx={{ width: '71px' }}>
+        <SidebarMenu />
+      </Box>
+      <Box
+        sx={{
+          flexGrow: 1,
+          overflow: 'auto',
+          backgroundColor: currentTheme.palette.background.default,
+          color: currentTheme.palette.text.primary,
+          transition: 'background-color 0.3s, color 0.3s',
+        }}
+      >
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/my-skills" element={<MySkills/>} />
+          <Route path="/my-jobs" element={<MyJobs/>} />
+          <Route path="/my-interviews" element={<div>My Interviews</div>} />
+          <Route path="/my-offers" element={<div>My Offers</div>} />
+          <Route path="/my-invites" element={<div>My Invites</div>} />
+          <Route path="/my-account" element={<Profile />} />
+          <Route path="/candidate-billing" element={<Billing />} />
+          <Route path="/customer-support" element={<Contact/>} />
+        </Routes>
+      </Box>
+    </Box>
+  );
+};
 
 const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box sx={{ display: 'flex', height: '100vh' }}>
-        <Box sx={{ width: '100px' }}>
-          <SidebarMenu />
-        </Box>
-        <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
-          <Dashboard />
-        </Box>
-      </Box>
-    </ThemeProvider>
+    <ThemeContextProvider>
+      <BrowserRouter>
+        <AppContent />
+      </BrowserRouter>
+    </ThemeContextProvider>
   );
 };
 

@@ -1,0 +1,15 @@
+.css-1rgoi19-MuiInputBase-root-MuiInput-root::before{
+    border: none;
+}
+
+/* .css-1rgoi19-MuiInputBase-root-MuiInput-root::after{
+    border-bottom: 1px solid #ededed;
+} */
+
+.css-1rgoi19-MuiInputBase-root-MuiInput-root.Mui-focused:after{
+    border-bottom: 1px solid #ededed !important;
+}
+
+.css-1rgoi19-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled, .Mui-error):before{
+    border: none;
+}
