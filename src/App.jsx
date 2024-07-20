@@ -11,6 +11,7 @@ import SidebarMenu from './components/SidebarMenu/SidebarMenu';
 import './App.css';
 import MyJobs from './screens/MyJobs/MyJobs';
 import MySkills from './screens/MySkills/MySkills';
+import AssessmentQuestion from './screens/AssessmentQuestion/AssessmentQuestion';
 
 const AppContent = () => {
   const { currentTheme } = useContext(ThemeContext);
@@ -38,7 +39,8 @@ const AppContent = () => {
           <Route path="/my-invites" element={<div>My Invites</div>} />
           <Route path="/my-account" element={<Profile />} />
           <Route path="/candidate-billing" element={<Billing />} />
-          <Route path="/customer-support" element={<Contact/>} />
+          <Route path="/customer-support" element={<Contact />} />
+          <Route path="/assessment-question" element={<AssessmentQuestion/>} />
         </Routes>
       </Box>
     </Box>
