@@ -5,7 +5,7 @@ import React from 'react'
 const Billing = () => {
     return (
         <>
-            <Box className="profileHeader" sx={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <Box className="header" sx={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
                 <Box
                     className="page-title"
                     sx={{

@@ -16,6 +16,7 @@ const lightTheme = createTheme({
         text: {
             primary: '#000000',
             secondary: '#333333',
+            light: "rgba(157,157,157,1)",
         },
     },
     typography: {
@@ -48,6 +49,7 @@ const darkTheme = createTheme({
         text: {
             primary: '#ffffff',
             secondary: '#cccccc',
+            
         },
     },
     typography: {

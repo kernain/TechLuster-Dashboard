@@ -13,13 +13,18 @@ import MyJobs from './screens/MyJobs/MyJobs';
 import MySkills from './screens/MySkills/MySkills';
 import AssessmentQuestion from './screens/AssessmentQuestion/AssessmentQuestion';
 import BeginAssessment from './screens/BeginAssessment/BeginAssessment';
+import Jobs from './screens/Jobs/Jobs';
+import Login from './screens/Login/Login';
+import JoinUs from './screens/JoinUs/JoinUs';
+import Signup from './screens/Signup/Signup';
+
 
 const AppContent = () => {
   const { currentTheme } = useContext(ThemeContext);
   const location = useLocation();
 
   // Define routes where the sidebar should not be displayed
-  const noSidebarRoutes = ['/my-interviews', '/my-offers', '/begin-assessment'];
+  const noSidebarRoutes = ['/begin-assessment', "/login", "/join-us", "/signup"];
 
   // Check if the current route is in the noSidebarRoutes array
   const showSidebar = !noSidebarRoutes.includes(location.pathname);
@@ -44,6 +49,7 @@ const AppContent = () => {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/my-skills" element={<MySkills />} />
+          <Route path="/all-jobs" element={<Jobs />} />
           <Route path="/my-jobs" element={<MyJobs />} />
           <Route path="/my-interviews" element={<div>My Interviews</div>} />
           <Route path="/my-offers" element={<div>My Offers</div>} />
@@ -53,6 +59,10 @@ const AppContent = () => {
           <Route path="/customer-support" element={<Contact />} />
           <Route path="/begin-assessment" element={<BeginAssessment/>} />
           <Route path="/assessment-question" element={<AssessmentQuestion />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/join-us" element={<JoinUs />} />
+          <Route path="/signup" element={<Signup />} />
+          
         </Routes>
       </Box>
     </Box>

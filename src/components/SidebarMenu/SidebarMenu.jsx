@@ -1,6 +1,6 @@
 // src/components/SidebarMenu/SidebarMenu.jsx
 import React, { useState, useContext } from 'react';
-import { useTheme, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CssBaseline, IconButton, Box, Switch, Typography } from '@mui/material';
+import { useTheme, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CssBaseline, IconButton, Box, Switch, Typography, Collapse } from '@mui/material';
 import { Link } from 'react-router-dom';
 import GridViewIcon from '@mui/icons-material/GridView';
 import PersonIcon from '@mui/icons-material/Person';
@@ -13,6 +13,10 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import SecurityIcon from '@mui/icons-material/Security';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import SearchIcon from '@mui/icons-material/Search';
 import logoImage from "../../assets/client-icon.png";
 import { ThemeContext } from '../../theme/ThemeContext';
 import "./SidebarMenu.css";
@@ -23,6 +27,7 @@ const SidebarMenu = () => {
     const theme = useTheme();
     const { toggleTheme, currentTheme } = useContext(ThemeContext);
     const [open, setOpen] = useState(false);
+    const [jobsOpen, setJobsOpen] = useState(false);
 
     const handleMouseEnter = () => {
         setOpen(true);
@@ -30,12 +35,17 @@ const SidebarMenu = () => {
 
     const handleMouseLeave = () => {
         setOpen(false);
+        setJobsOpen(false);
+    };
+
+    const handleJobsClick = () => {
+        setJobsOpen(!jobsOpen);
     };
 
     const menuItems = [
         { text: 'Dashboard', icon: <GridViewIcon />, link: '/' },
         { text: 'User', icon: <PersonIcon />, link: '/user' },
-        { text: 'Jobs', icon: <WorkIcon />, link: '/my-jobs' },
+        { text: 'Jobs', icon: <WorkIcon />, link: '#' }, // Updated link to '#'
         { text: 'My Skills', icon: <EditIcon />, link: '/my-skills' },
         { text: 'My Offers', icon: <NoteAddIcon />, link: '/my-offers' },
         { text: 'My Invites', icon: <CalendarTodayIcon />, link: '/my-invites' },
@@ -44,6 +54,11 @@ const SidebarMenu = () => {
         { text: 'Customer Support', icon: <HelpOutlineIcon />, link: '/customer-support' },
         { text: 'Account and Security', icon: <SecurityIcon />, link: '/my-account' },
         { text: 'Logout', icon: <PowerSettingsNewIcon />, link: '/logout' },
+    ];
+
+    const jobsSubmenuItems = [
+        { text: 'My Jobs', icon: <AssignmentIcon />, link: '/my-jobs' },
+        { text: 'Search Jobs', icon: <SearchIcon />, link: '/all-jobs' },
     ];
 
     return (
@@ -81,37 +96,75 @@ const SidebarMenu = () => {
                 </Box>
                 <List sx={{ overflowY: "hidden" }}>
                     {menuItems.map((item, index) => (
-                        <ListItem key={index} disablePadding sx={{ display: 'block', paddingTop: .5, paddingBottom: .5 }}>
-                            <ListItemButton
-                                component={Link}
-                                to={item.link}
-                                sx={{
-                                    minHeight: 48,
-                                    justifyContent: open ? 'initial' : 'center',
-                                    px: 2,
-                                    '&:hover': {
-                                        backgroundColor: '#fc7a1e',
-                                        color: '#fff',
-                                    },
-                                }}
-                            >
-                                <ListItemIcon
-                                    className='navigation-item-icon'
+                        <React.Fragment key={index}>
+                            <ListItem disablePadding sx={{ display: 'block', paddingTop: .5, paddingBottom: .5 }}>
+                                <ListItemButton
+                                    component={item.text === 'Jobs' ? 'div' : Link}
+                                    to={item.link}
+                                    onClick={item.text === 'Jobs' ? handleJobsClick : null}
                                     sx={{
-                                        minWidth: 0,
-                                        mr: open ? 0 : 'auto',
-                                        justifyContent: 'center',
-                                        color: 'inherit',
-                                        width: 50,
+                                        minHeight: 48,
+                                        justifyContent: open ? 'initial' : 'center',
+                                        px: 2,
+                                        '&:hover': {
+                                            backgroundColor: '#fc7a1e',
+                                            color: '#fff',
+                                        },
                                     }}
                                 >
-                                    {item.icon}
-                                </ListItemIcon>
-                                <ListItemText primary={item.text} sx={{ display: open ? "block" : "none", color: 'inherit' }} />
-                            </ListItemButton>
-                        </ListItem>
+                                    <ListItemIcon
+                                        className='navigation-item-icon'
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: open ? 0 : 'auto',
+                                            justifyContent: 'center',
+                                            color: 'inherit',
+                                            width: 50,
+                                        }}
+                                    >
+                                        {item.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.text} sx={{ display: open ? "block" : "none", color: 'inherit' }} />
+                                    {item.text === 'Jobs' && open && (jobsOpen ? <ExpandLess /> : <ExpandMore />)}
+                                </ListItemButton>
+                                {item.text === 'Jobs' && (
+                                    <Collapse in={jobsOpen} timeout="auto" unmountOnExit>
+                                        <List component="div" disablePadding>
+                                            {jobsSubmenuItems.map((subItem, subIndex) => (
+                                                <ListItemButton
+                                                    key={subIndex}
+                                                    component={Link}
+                                                    to={subItem.link}
+                                                    sx={{
+                                                        pl: open ? 4 : 2,
+                                                        justifyContent: open ? 'initial' : 'center',
+                                                        '&:hover': {
+                                                            backgroundColor: '#fc7a1e',
+                                                            color: '#fff',
+                                                        },
+                                                    }}
+                                                >
+                                                    <ListItemIcon
+                                                        sx={{
+                                                            minWidth: 0,
+                                                            mr: open ? 0 : 'auto',
+                                                            justifyContent: 'center',
+                                                            color: 'inherit',
+                                                            width: 50,
+                                                        }}
+                                                    >
+                                                        {subItem.icon}
+                                                    </ListItemIcon>
+                                                    <ListItemText primary={subItem.text} sx={{ display: open ? "block" : "none", color: 'inherit' }} />
+                                                </ListItemButton>
+                                            ))}
+                                        </List>
+                                    </Collapse>
+                                )}
+                            </ListItem>
+                        </React.Fragment>
                     ))}
-                    <ListItem disablePadding sx={{ justifyContent: 'center', paddingTop: 2, }}>
+                    <ListItem disablePadding sx={{ justifyContent: 'center', paddingTop: 2 }}>
                         <Switch
                             checked={currentTheme.palette.mode === 'dark'}
                             onChange={toggleTheme}
@@ -128,7 +181,7 @@ const SidebarMenu = () => {
                                 },
                             }}
                         />
-                        <Typography variant="body2" sx={{ ml: 1, display: open ? "block" : "none", }}>
+                        <Typography variant="body2" sx={{ ml: 1, display: open ? "block" : "none" }}>
                             {currentTheme.palette.mode === 'light' ? 'Light Mode' : 'Dark Mode'}
                         </Typography>
                     </ListItem>
